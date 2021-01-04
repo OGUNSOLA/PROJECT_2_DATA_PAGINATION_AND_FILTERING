@@ -48,6 +48,11 @@ header h2 {
   color: red;
   text-align: center;
   font-size: 2em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-weight: bold;
+
 }
 
 

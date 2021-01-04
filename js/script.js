@@ -204,7 +204,7 @@ function displaySeach(){
    if(found.length == 0){
       numOfSearchButtons = 1;
       noResultMessage = document.createElement('h1');
-      noResultMessage.textContent = 'No Result';
+      noResultMessage.textContent = 'NO RESULT';
       noResultMessage.className = 'noResult';
       div.insertBefore(noResultMessage,studentUl);
       //document.getElementsByTagName('header')[0].appendChild(noResultMessage);
