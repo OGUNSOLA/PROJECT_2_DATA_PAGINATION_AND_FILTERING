@@ -23,6 +23,11 @@ const paginationUl = document.querySelector('ul.link-list');
 const numOfButtons = Math.ceil(data.length / 9);
 let search = document.getElementById('search');
 const searchBtn = document.querySelector('.student-search button');
+let found = [];
+let numOfSearchButtons;
+let pageButtonClicked;
+let noResultMessage;
+
 
 
 
@@ -59,11 +64,10 @@ for (let i = 0; i < data.length; i++) {
 
 }
 
-
-
+ let list = document.querySelectorAll('.student-list li');
 
 function addPagination(numOfButtons) {
-
+   
 
    for (let i = 0; i < numOfButtons; i++) {
       const buttonLi = document.createElement('li');
@@ -72,33 +76,52 @@ function addPagination(numOfButtons) {
       btn.setAttribute('type', 'button');
       buttonLi.appendChild(btn);
       paginationUl.appendChild(buttonLi);
+      
    }
 
 
    return (document.querySelectorAll("ul.link-list li"));
 }
 
-const thebuttons = addPagination(numOfButtons);
+let theButtons = addPagination(numOfButtons);
+
 
 paginationUl.addEventListener('click', (e) => {
    if (e.target.tagName == 'BUTTON') {
-      for (let i = 0; i < thebuttons.length; i++) {
-         thebuttons[i].firstElementChild.className = '';
+      for (let i = 0; i < theButtons.length; i++) {
+         theButtons[i].firstElementChild.className = '';
       }
       e.target.className = 'active';
-      changeDisplay(e.target);
+      pageButtonClicked = e.target;
+      changeDisplay(pageButtonClicked);
    }
 
 });
 
-let list = document.querySelectorAll('.student-list li');
 
+window.onload = (event) => {
+   defaultDisplay(list);
+};
 
-function changeDisplay(e) {
+function defaultDisplay(list){
+  
+
+   for (let i = 0; i < list.length; i++) {
+      
+      list[i].style.display = 'none';
+   }
+   for (let i = 0; i < 9; i++) {
+      list[i].style.display = 'block';
+   }
+
+   theButtons[0].firstElementChild.className = 'active';
+}
+
+function changeDisplay(pageButtonClicked) {
 
 
    for (let i = 0; i < numOfButtons; i++) {
-      if (e.textContent == i + 1) {
+      if (pageButtonClicked.textContent == i + 1) {
          hideAll();
          for (let j = i * 9; j < (i * 9) + 9; j++) {
             if (list[j]) {
@@ -110,8 +133,6 @@ function changeDisplay(e) {
    }
 
 
-
-
 }
 
 function hideAll() {
@@ -120,58 +141,89 @@ function hideAll() {
    }
 }
 
+// SEARCH SECTION 
 
+search.addEventListener('keyup', () => {
+   
+   searchItem();
+});
 
+searchBtn.addEventListener('click', () => {
+  
+   searchItem();
+});
 
-window.onload = (event) => {
-   for (let i = 0; i < list.length; i++) {
-      list[i].style.display = 'none';
-   }
-   for (let i = 0; i < 9; i++) {
-      list[i].style.display = 'block';
-   }
-
-   thebuttons[0].firstElementChild.className = 'active';
-};
 
 const namesToCompare = document.querySelectorAll('.student-list h3');
 
-searchBtn.addEventListener('click', () => {
-   searchItem();
-});
-
-search.addEventListener('keyup', () => {
-   searchItem();
-});
-
-
-
 function searchItem() {
+   if(noResultMessage){
+      noResultMessage.remove();
+   }
+  
    hideAll();
+   found= [];
    const str = search.value.toLowerCase();
    for (let i = 0; i < namesToCompare.length; i++) {
       let strstr = namesToCompare[i].textContent.toLowerCase();
-
+      
 
       if (strstr.includes(str)) {
-
-         list[i].style.display = 'block';
+         found.push(list[i]);         
       }
-
-
    }
-
-
+   displaySeach();  
 }
 
 
 
+function displaySeach(){
+ 
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+   while(paginationUl.firstChild){
+      paginationUl.removeChild(paginationUl.firstChild);
+   }
+   
+   for (let i = 0; i < list.length; i++) {
+      
+      list[i].style.display = 'none';
+   }
 
+   let a;
+   if(found.length >9){
+      a =9;
+   }
+   else {
+      a = found.length;
+   }
 
+   for (let i = 0; i < a; i++) {
+      found[i].style.display = 'block';
+   }
 
-// Call functions
+   if(found.length == 0){
+      numOfSearchButtons = 1;
+      noResultMessage = document.createElement('h1');
+      noResultMessage.textContent = 'No Result';
+      noResultMessage.className = 'noResult';
+      div.insertBefore(noResultMessage,studentUl);
+      //document.getElementsByTagName('header')[0].appendChild(noResultMessage);
+
+   }else {
+      numOfSearchButtons= Math.ceil(found.length / 9);
+   }
+   
+
+   for (let i = 0; i < numOfSearchButtons; i++) {
+      const buttonLi = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.textContent = i + 1;
+      btn.setAttribute('type', 'button');
+      buttonLi.appendChild(btn);
+      paginationUl.appendChild(buttonLi);
+      
+   }
+   console.log(paginationUl);
+   paginationUl.firstElementChild.firstElementChild.className = 'active';
+
+}
