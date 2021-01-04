@@ -58,6 +58,7 @@ header h2 {
 
 .student-search {
   display: flex;
+  position: relative;
 }
 
 .student-search input {
@@ -218,4 +219,10 @@ header h2 {
 		border-radius: 5px;
 		box-shadow: 0 4px 16px 0 rgba(22, 42, 90, 0.09);
 	}
+}
+
+.noResult{
+  position: absolute;
+  left: 0%;
+  top: 100%;
 }

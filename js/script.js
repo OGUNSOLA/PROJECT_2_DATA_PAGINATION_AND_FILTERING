@@ -252,8 +252,7 @@ function displaySeach() {
       noResultMessage = document.createElement('h1');
       noResultMessage.textContent = 'NO RESULT';
       noResultMessage.className = 'noResult';
-      div.insertBefore(noResultMessage, studentUl);
-      //document.getElementsByTagName('header')[0].appendChild(noResultMessage);
+      label.insertBefore(noResultMessage, input);
 
    } else {
       numOfSearchButtons = Math.ceil(found.length / 9);
